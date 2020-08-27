@@ -6,3 +6,5 @@ Algorithm_2 -  Find Next number having distinct digits from the given number N
 
 Algorithm_3 -  hackerEarth problem - Mancunian and K-Ordered LCS
 
+Algorithm_4 - Maximise the sum of two Numbers using at most one swap between them
+
