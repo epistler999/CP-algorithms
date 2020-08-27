@@ -8,3 +8,5 @@ Algorithm_3 -  hackerEarth problem - Mancunian and K-Ordered LCS
 
 Algorithm_4 - Maximise the sum of two Numbers using at most one swap between them
 
+Algorithm_5 - To check whether cycle is present in directed un-weighted graph
+
