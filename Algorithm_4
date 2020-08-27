@@ -1,0 +1,116 @@
+/********************************  Maximise the sum of two Numbers using at most one swap between them  ********************************/ 
+
+
+// C++ program to maximise the sum of two 
+// Numbers using at most one swap between them 
+  
+#include <bits/stdc++.h> 
+using namespace std; 
+  
+#define MAX 100 
+  
+// Function to maximize the sum 
+// by swapping only one digit 
+void findMaxSum(int n1, int n2) 
+{ 
+  
+    int arr1[MAX] = { 0 }, arr2[MAX] = { 0 }; 
+    int l1 = 0, l2 = 0; 
+  
+    int max1 = max(n1, n2); 
+    int min1 = min(n1, n2); 
+  
+    // Store digits of max(n1, n2) 
+    for (int i = max1; i > 0; i /= 10) 
+        arr1[l1++] = (i % 10); 
+  
+    // Store digits of min(n1, n2) 
+    for (int i = min1; i > 0; i /= 10) 
+        arr2[l2++] = (i % 10); 
+  
+    int f = 0; 
+  
+    // If length of the two numbers 
+    // are unequal 
+    if (l1 != l2) { 
+        // Find the most significant number 
+        // and the most significant index 
+        // for swapping 
+        int index = (max_element(arr2, arr2 + l2) - arr2); 
+        for (int i = l1 - 1; i > (l2 - 1); i--) { 
+            if (arr1[i] < arr2[index]) { 
+                swap(arr1[i], arr2[index]); 
+                f = 1; 
+                break; 
+            } 
+        } 
+    } 
+  
+    // If both numbers are 
+    // of equal length 
+    if (f != 1) { 
+  
+        int index1 = 0, index2 = 0; 
+        int diff1 = 0, diff2 = 0; 
+        for (int i = l2 - 1; i >= 0; i--) { 
+  
+            // Fetch the index of current maximum 
+            // digit present in both the arrays 
+            index1 = (max_element(arr1, arr1 + i) - arr1); 
+            index2 = (max_element(arr2, arr2 + i) - arr2); 
+  
+            // Compute the difference 
+            diff1 = (arr2[index2] - arr1[i]); 
+            diff2 = (arr1[index1] - arr2[i]); 
+  
+            // Find the most significant index 
+            // and the most significant digit 
+            // to be swapped 
+            if (diff1 > 0 || diff2 > 0) { 
+  
+                if (diff1 > diff2) { 
+                    swap(arr1[i], arr2[index2]); 
+                    break; 
+                } 
+  
+                else if (diff2 > diff1) { 
+                    swap(arr2[i], arr1[index1]); 
+                    break; 
+                } 
+  
+                else if (diff1 == diff2) { 
+  
+                    if (index1 <= index2) { 
+                        swap(arr2[i], arr1[index1]); 
+                        break; 
+                    } 
+  
+                    else if (index2 <= index1) { 
+                        swap(arr1[i], arr2[index2]); 
+                        break; 
+                    } 
+                } 
+            } 
+        } 
+    } 
+  
+    // Restore the new numbers 
+    int f_n1 = 0, f_n2 = 0; 
+    for (int i = l1 - 1; i >= 0; i--) { 
+        f_n1 = (f_n1 * 10) + arr1[i]; 
+        f_n2 = (f_n2 * 10) + arr2[i]; 
+    } 
+  
+    // Display the maximized sum 
+    cout << (f_n1 + f_n2) << "\n"; 
+} 
+  
+// Driver function 
+int main() 
+{ 
+    int N1 = 9987; 
+    int N2 = 123; 
+  
+    findMaxSum(N1, N2); 
+    return 0; 
+}
