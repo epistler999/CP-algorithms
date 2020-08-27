@@ -1,0 +1,88 @@
+/***************************** To check whether cycle is present in directed un-weighted graph *****************************/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+template<typename T>#include<bits/stdc++.h>
+using namespace std;
+
+template<typename T>
+class Graph
+{
+    map<T,list<T>> adjlist;
+public:
+    Graph() 
+    {
+    }
+    // to add edge input by the user
+    void addEdge(T u,T v,bool bidirect = true)
+    {
+        adjlist[u].push_back(v);
+        if(bidirect)
+            adjlist[v].push_back(u);
+    }
+    
+    bool findCycleHelper(T node,map<T,bool> &visited,map<T,bool> &instack)
+    {
+        // processing the current node - visited, instack
+        visited[node]=true;
+        instack[node]=true;
+        // explore the neighbors of the node
+        for(auto neighbor:adjlist[node])
+        {
+            // two conditions
+            // 1. current node not visited but cycle present in further branch
+            if((!visited[neighbor] && findCycleHelper(neighbor,visited,instack)) || instack[neighbor]==true)
+            {
+                return true;
+            }
+        }
+        // going to pop out the current branch if no cycle present till now
+        instack[node]=false;
+        return false;
+
+
+    }
+
+    bool findCycle()
+    {
+        map<T,bool> visited;
+        map<T,bool> instack;
+        // to check dfs in each node
+        for(auto itr:adjlist)
+        {
+            T node =itr.first;
+
+            if(!visited[node])
+            {
+                bool cycle = findCycleHelper(node,visited,instack);
+                if(cycle)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+};
+int main()
+{
+    Graph<string> g;
+    g.addEdge("English","Programming logic",false);
+    g.addEdge("Maths","Programming logic",false);
+    g.addEdge("Programming logic","HTML",false);
+    g.addEdge("Programming logic","PYTHON",false);
+    g.addEdge("Programming logic","JAVA",false);
+    g.addEdge("Programming logic","JS",false);
+    g.addEdge("PYTHON","Web Dev",false);
+    g.addEdge("HTML","CSS",false);
+    g.addEdge("CSS","JS",false);
+    g.addEdge("JS","Web Dev",false);
+    g.addEdge("JAVA","Web Dev",false);
+    g.addEdge("PYTHON","Web Dev",false);
+    if(g.findCycle())  cout<<"Cycle present in graph";
+    else  cout<<"cycle not present in graph";
+    cout<<endl;
+    return 0;
+}
+
+
