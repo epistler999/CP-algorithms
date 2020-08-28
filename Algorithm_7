@@ -1,0 +1,97 @@
+ /************************************************** Bellman Ford Algorithm **************************************************/ 
+ 
+ #include<bits/stdc++.h>
+using namespace std;
+class Edge
+{
+public:
+    int src;
+    int dest;
+    int weight;
+};
+
+class Graph{
+public:
+    int vertices,edges;
+    Edge *edge;
+    Graph(int v,int e)
+    {
+        edges = e;
+        vertices = v;
+        edge =new Edge[edges];
+    }        
+    void addEdge(int src,int dest,int weight,int counter)
+    {
+        edge[counter].src = src;
+        edge[counter].dest = dest;
+        edge[counter].weight = weight;
+    }
+    
+    void bellmanFordAlgorithm(int src)
+    {
+        int distance[vertices];
+        for(int i=0;i<vertices;i++)
+        {
+            distance[i]=INT_MAX;
+        }
+        distance[src]=0;
+        // Relaxation code
+        for(int i=1;i<=vertices-1;i++)
+        {
+            for(int j=0;j<edges;j++)
+            {
+                int s = edge[j].src;
+                int dest = edge[j].dest;
+                int weight = edge[j].weight;
+                if(distance[s]!=INT_MAX and (distance[s]+weight)<distance[dest])
+                    distance[dest] = distance[s]+weight;
+            }
+        }
+       
+        // check for negative weight cycle 
+        for(int j=0;j<edges;j++)
+        {
+            int s = edge[j].src;
+            int dest = edge[j].dest;
+            int weight = edge[j].weight;
+            if(distance[s]!=INT_MAX and (distance[s]+weight)<distance[dest])
+            {
+                cout<<"The given graph contains negative weight cycle\n";
+                return;
+            }   
+        }
+        
+        // if their is no negative weight cycle than print the distance array
+        for(int j=0;j<vertices;j++)
+        {
+            cout<<"distance of edge "<<j<<" from "<<src<<" is "<<distance[j]<<"\n";
+        }
+    }
+};
+int main()
+{
+    int v,e;
+    cin>>v>>e;
+    Graph g(v, e);
+    for(int i=0;i<e;i++)
+    {
+        int u,v,w;
+        cin>>u>>v>>w;
+        g.addEdge(u, v, w, i);
+    }
+    g.bellmanFordAlgorithm(0);
+    return 0;
+}
+
+// sample input
+/*
+5 8
+0 1 -1
+0 2 4
+1 2 3
+3 2 5
+4 3 -3
+1 4 2
+1 3 2
+3 1 1
+*/
